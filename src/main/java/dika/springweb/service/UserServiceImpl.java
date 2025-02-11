@@ -10,11 +10,12 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 @Service
-public class UserServiceImp implements UserService {
+public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -36,11 +37,14 @@ public class UserServiceImp implements UserService {
     @Override
     public void update(User user) {
         Optional<User> userOptional = userRepository.findById(user.getId());
-        User userUpdate = userOptional.get();
-        updateIfNotNull(user.getName(), userUpdate::setName);
-        updateIfNotNull(user.getSurname(), userUpdate::setSurname);
-        updateIfNotNull(user.getEmail(), userUpdate::setEmail);
-        userRepository.save(userUpdate);
+        if (userOptional.isPresent()) {
+            User userUpdate = userOptional.get();
+            updateIfNotNull(user.getName(), userUpdate::setName);
+            updateIfNotNull(user.getSurname(), userUpdate::setSurname);
+            updateIfNotNull(user.getEmail(), userUpdate::setEmail);
+            userRepository.save(userUpdate);
+        }
+
     }
 
     @Override

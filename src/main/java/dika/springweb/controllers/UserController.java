@@ -6,12 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Slf4j
 @Controller
@@ -38,7 +38,7 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "redirect:/user";
@@ -46,6 +46,7 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User user, Model model) {
+        model.addAttribute("user", userService.findById(id));
         return "editUser";
     }
 
@@ -53,5 +54,10 @@ public class UserController {
     public String updateUser(@ModelAttribute("user") User user) {
         userService.update(user);
         return "redirect:/user";
+    }
+
+    @GetMapping("/**")
+    public String error() {
+        return "userNotFound";
     }
 }
