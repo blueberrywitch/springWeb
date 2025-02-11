@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: springweb
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springweb
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

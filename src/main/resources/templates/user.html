@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <style>
+        /* Стили для формы добавления пользователя */
+        .user-form {
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: inline-block;
+            width: 100px; /* Фиксированная ширина для выравнивания */
+            vertical-align: middle;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"] {
+            width: calc(100% - 110px); /* Ширина поля с учётом метки и отступа */
+            padding: 5px;
+        }
+        .form-group input[type="submit"] {
+            margin-left: 100px; /* Сдвиг кнопки, чтобы она выровнялась с полями */
+            padding: 5px 10px;
+        }
+
+        /* Стили для таблицы */
+        .table-container {
+            width: 80%;        /* Задайте нужную ширину */
+            margin: 20px auto; /* Центрирование контейнера */
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto; /* Центрирование таблицы внутри контейнера */
+        }
+        table th, table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        /* Стили для кнопок действий */
+        .action-button {
+            border: 1px solid #ccc;
+            padding: 1px 12px;
+            text-decoration: none;
+            display: inline-block;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            text-align: center;
+            color: green;
+            margin-right: 5px;
+        }
+        .delete-button {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<!-- Форма для добавления пользователя -->
+<form th:action="@{/user}" th:object="${user}" method="post" class="user-form">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name"/>
+    </div>
+    <div class="form-group">
+        <label for="surname">Surname</label>
+        <input type="text" th:field="*{surname}" id="surname"/>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" th:field="*{email}" id="email" required />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add User"/>
+    </div>
+</form>
+
+<!-- Таблица для отображения списка пользователей -->
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>Actions</th> <!-- Колонка для кнопок действий -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <!-- Ссылка редактирования -->
+                <a th:href="@{/user/edit/{id}(id=${user.id})}" class="action-button">Редактировать</a>
+                <!-- Форма для отправки DELETE-запроса -->
+                <form th:action="@{/user/{id}(id=${user.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <input type="submit" value="Удалить" class="action-button delete-button"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
