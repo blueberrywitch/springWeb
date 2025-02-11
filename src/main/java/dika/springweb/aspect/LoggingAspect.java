@@ -24,7 +24,7 @@ public class LoggingAspect {
 
     @AfterReturning(pointcut = "controllerMethods()", returning = "result")
     public void logAfter(JoinPoint joinPoint, Object result) {
-        log.info("Конец выполенения метода: {} результат : {}", joinPoint.getSignature().toShortString(), result);
+        log.info("Конец выполнения метода: {} результат : {}", joinPoint.getSignature().toShortString(), result);
     }
 
 
