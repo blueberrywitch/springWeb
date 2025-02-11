@@ -37,9 +37,9 @@ public class UserServiceImp implements UserService {
     public void update(User user) {
         Optional<User> userOptional = userRepository.findById(user.getId());
         User userUpdate = userOptional.get();
-        updateIfNotNull(user.getName(),userUpdate::setName);
-        updateIfNotNull(user.getSurname(),userUpdate::setSurname);
-        updateIfNotNull(user.getEmail(),userUpdate::setEmail);
+        updateIfNotNull(user.getName(), userUpdate::setName);
+        updateIfNotNull(user.getSurname(), userUpdate::setSurname);
+        updateIfNotNull(user.getEmail(), userUpdate::setEmail);
         userRepository.save(userUpdate);
     }
 
@@ -48,8 +48,8 @@ public class UserServiceImp implements UserService {
         return userRepository.findAll();
     }
 
-    private void updateIfNotNull(String newParam, Consumer<String> oldParam){
-        if (newParam!=null){
+    private void updateIfNotNull(String newParam, Consumer<String> oldParam) {
+        if (newParam != null) {
             oldParam.accept(newParam);
         }
     }
